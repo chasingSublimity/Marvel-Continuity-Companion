@@ -1,0 +1,44 @@
+* {
+	font-family: "Roboto", sans-serif;
+}
+
+header {
+	display: block;
+	width: 100%;
+	background-color: #efc034;
+}
+
+header h1 {
+	margin-bottom: 0px;
+}
+
+header p {
+	margin-top: 8px;
+}
+
+.comic-cover {
+    border: 1px solid #E5E5E5;
+    margin-top: 30px;
+
+}
+
+.cover-img {
+  	width: 100%;
+}
+
+.comic-descrip {
+	text-align: left;
+	padding: 20px;
+	
+}
+
+.comic-descrip h3 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+
+}
+
+.comic-descrip p {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
