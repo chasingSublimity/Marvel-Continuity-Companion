@@ -26,7 +26,7 @@ function displayResults(data) {
 		data.results.forEach(function(item){
 			results += 
 				'<div class="comic-cover">' +
-					'<img src="' + data.results.thumbnail + '" class="cover-img">' +
+					'<img src="' + data.results.thumbnail.path + '" class="cover-img">' +
 					'<div class="comic-descrip">' +
 						'<h3>' + data.results.name + '</h3>' +
 					'</div>' +
