@@ -1,5 +1,6 @@
 * {
 	font-family: "Roboto", sans-serif;
+	box-sizing: border-box;
 }
 
 header {
@@ -16,10 +17,14 @@ header p {
 	margin-top: 8px;
 }
 
+.form-container {
+	margin-top: 15px;
+	width: 100%;
+}
+
 .comic-cover {
     border: 1px solid #E5E5E5;
     margin-top: 30px;
-
 }
 
 .cover-img {
@@ -41,4 +46,8 @@ header p {
 .comic-descrip p {
 	margin-top: 8px;
 	margin-bottom: 8px;
+}
+
+.search-results {
+	margin-top: 15px;
 }
