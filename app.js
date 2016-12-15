@@ -19,13 +19,13 @@ function getCharacterInfo(searchTerm) {
 // }
 
 // function to display data
-function displayResults(data) {
-	console.log(data);
+function displayResults(returnObject) {
+	console.log(returnObject.data);
 	var apiResults = '';
-	if (data.results.length > 0) {
+	if (returnObject.data.count > 0) {
 		console.log('if statement running');
-		data.results.forEach(function(item){
-			results += 
+		returnObject.data.results.forEach(function(item){
+			apiResults += 
 				'<div class="comic-cover">' +
 					'<img src="' + item.thumbnail.path + '" class="cover-img">' +
 					'<div class="comic-descrip">' +
