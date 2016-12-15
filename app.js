@@ -22,7 +22,7 @@ function getCharacterInfo(searchTerm) {
 function displayResults(data) {
 	console.log(data);
 	var results = '';
-	if (data.results > 0) {
+	if (data.results.length > 0) {
 		console.log('if statement running');
 		data.results.forEach(function(item){
 			results += 
