@@ -21,7 +21,7 @@ function getCharacterInfo(searchTerm) {
 // function to display data
 function displayResults(data) {
 	console.log(data);
-	var results = '';
+	var apiResults = '';
 	if (data.results.length > 0) {
 		console.log('if statement running');
 		data.results.forEach(function(item){
@@ -34,10 +34,10 @@ function displayResults(data) {
 				'</div>'
 			;});
 	} else {
-		results += '<p>No results</p>';
+		apiResults += '<p>No results</p>';
 	}
-	console.log(results);
-	$('.js-search-results').html(results);
+	console.log(apiResults);
+	$('.js-search-results').html(apiResults);
 }
 
 // function to listen for submit 
