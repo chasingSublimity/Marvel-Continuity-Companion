@@ -27,7 +27,7 @@ function displayResults(returnObject) {
 		returnObject.data.results.forEach(function(item){
 			apiResults += 
 				'<div class="comic-cover">' +
-					'<img src="' + item.thumbnail.path + '" class="cover-img">' +
+					'<img src="' + item.thumbnail.path + '/standard_amazing.' + item.thumbnail.extension + '" class="cover-img">' +
 					'<div class="comic-descrip">' +
 						'<h3>' + item.name + '</h3>' +
 					'</div>' +
