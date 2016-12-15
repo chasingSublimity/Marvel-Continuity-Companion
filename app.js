@@ -35,6 +35,7 @@ function displayResults(data) {
 	} else {
 		results =+ '<p>No results</p>';
 	}
+	console.log(results);
 	$('.js-search-results').html(results);
 }
 
