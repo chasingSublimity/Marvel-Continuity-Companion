@@ -22,28 +22,28 @@ header p {
 	width: 100%;
 }
 
-.comic-cover {
+.char-info {
     border: 1px solid #E5E5E5;
     margin-top: 30px;
 }
 
-.cover-img {
-
+.char-img {
+	width: 100%;
 }
 
-.comic-descrip {
+.char-descrip {
 	text-align: left;
 	padding: 20px;
 	
 }
 
-.comic-descrip h3 {
+.char-descrip h3 {
 	margin-top: 0px;
 	margin-bottom: 0px;
 
 }
 
-.comic-descrip p {
+.char-descrip p {
 	margin-top: 8px;
 	margin-bottom: 8px;
 }
