@@ -20,6 +20,7 @@ function getComicCover(object) {
 		formatType: 'comic',
 		noVariants: true,
 		limit: 5,
+		orderBy: 'onsaleDate',
 		apikey: 'b5a985cb816977af5a8da412277c108b'
 	};
 	$.getJSON(endpoint, comicQuery, displayComicInfo);
