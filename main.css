@@ -17,6 +17,10 @@ header p {
 	margin-top: 8px;
 }
 
+input {
+	width: 300px;
+}
+
 .form-container {
 	margin-top: 15px;
 	width: 100%;
