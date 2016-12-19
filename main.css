@@ -3,10 +3,18 @@
 	box-sizing: border-box;
 }
 
+html {
+	background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(CivilWar4/CAPMARVEL_Desktop-Wallpaper.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 header {
 	display: block;
 	width: 100%;
-	background-color: #efc034;
+	background-color: rgba(159, 163, 168, .5);
 }
 
 header h1 {
@@ -33,6 +41,7 @@ input {
 .char-info {
   border: 1px solid #E5E5E5;
   margin-top: 30px;
+  	background-color: rgba(159, 163, 168, .5);
 }
 
 .char-img {
@@ -47,7 +56,6 @@ input {
 .char-descrip h3 {
 	margin-top: 0px;
 	margin-bottom: 0px;
-
 }
 
 .char-descrip p {
@@ -71,7 +79,7 @@ input {
 .comic-descrip {
 	text-align: left;
 	padding: 20px;
-	
+	background-color: rgba(159, 163, 168, .5);
 }
 
 .comic-descrip h3 {
