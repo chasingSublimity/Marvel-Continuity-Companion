@@ -80,3 +80,7 @@ header p {
 	margin-top: 8px;
 	margin-bottom: 8px;
 }
+
+.cover-container {
+	display: inline-block;
+}

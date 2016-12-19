@@ -51,11 +51,10 @@ function displayComicInfo(returnObject) {
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
 			apiResults +=
-				'<div class="comic-info">' +
+				'<div class="comic-info col-4">' +
 					'<img src="' + item.thumbnail.path +'/standard_fantastic.' + item.thumbnail.extension + '" class="comic-img">' +
 					'<div class="comic-descrip">' +
 						'<h3>' + item.title + '</h3>' +
-						'<p>' + item.description + '</p>' +
 					'</div>' +
 				'</div>'
 		;});
