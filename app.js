@@ -1,4 +1,4 @@
-var marvelCharacterEndPoint = 'http://gateway.marvel.com/v1/public/characters';
+var marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters';
 
 // function to get character data through Marvel API
 function getCharacterId(searchTerm) {
@@ -13,7 +13,7 @@ function getCharacterId(searchTerm) {
 function getComicCover(object) {
 	displayCharacterInfo(object);
 	var id = object.data.results[0].id;
-	var endpoint = 'http://gateway.marvel.com/v1/public/characters/' + id + '/comics';
+	var endpoint = 'https://gateway.marvel.com/v1/public/characters/' + id + '/comics';
 	var comicQuery = {
 		characterId: id,
 		format: 'comic',
