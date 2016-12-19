@@ -22,9 +22,13 @@ header p {
 	width: 100%;
 }
 
+.character-container {
+	margin-top: 15px;
+}
+
 .char-info {
-    border: 1px solid #E5E5E5;
-    margin-top: 30px;
+  border: 1px solid #E5E5E5;
+  margin-top: 30px;
 }
 
 .char-img {
@@ -34,7 +38,6 @@ header p {
 .char-descrip {
 	text-align: left;
 	padding: 20px;
-	
 }
 
 .char-descrip h3 {
@@ -48,6 +51,32 @@ header p {
 	margin-bottom: 8px;
 }
 
-.search-results {
+.comic-container {
 	margin-top: 15px;
+}
+
+.comic-info {
+    border: 1px solid #E5E5E5;
+    margin-top: 30px;
+}
+
+.comic-img {
+	width: 100%;
+}
+
+.comic-descrip {
+	text-align: left;
+	padding: 20px;
+	
+}
+
+.comic-descrip h3 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+
+}
+
+.comic-descrip p {
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
