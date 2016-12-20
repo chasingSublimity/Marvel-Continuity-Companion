@@ -32,11 +32,12 @@ function displayCharacterInfo(returnObject) {
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
 			apiResults += 
-				'<div class="char-info">' +
-					'<img src="' + item.thumbnail.path + '/standard_fantastic.' + item.thumbnail.extension + '" class="char-img">' +
-					'<div class="char-descrip">' +
-						'<h3>' + item.name + '</h3>' +
-						'<p>' + item.description + '</p>' +
+				'<div class="col-3">' +
+					'<div class="char-info">' +
+						'<img src="' + item.thumbnail.path + '/standard_fantastic.' + item.thumbnail.extension + '" class="char-img">' +
+						'<div class="char-descrip">' +
+							'<h3>' + item.name + '</h3>' +
+						'</div>' +
 					'</div>' +
 				'</div>'
 			;});
@@ -52,17 +53,21 @@ function displayComicInfo(returnObject) {
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
 			apiResults +=
-				'<div class="comic-info col-4">' +
-					'<img src="' + item.thumbnail.path +'/standard_fantastic.' + item.thumbnail.extension + '" class="comic-img">' +
-					'<div class="comic-descrip">' +
-						'<h3>' + item.title + '</h3>' +
-					'</div>' +
-				'</div>'
+					'<div class="col-4">' +
+						'<div class="cover-container js-cover-container">' +
+							'<div class="comic-info">' +
+								'<img src="' + item.thumbnail.path +'/standard_fantastic.' + item.thumbnail.extension + '" class="comic-img">' +
+								'<div class="comic-descrip">' +
+									'<h3>' + item.title + '</h3>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>'
 		;});
 	} else {
 		apiResults += '<p>No results</p>';
 	}
-	$('.js-comic-container').html(apiResults);
+	$('.js-search-results').html(apiResults);
 }
 
 // function to listen for submit 
