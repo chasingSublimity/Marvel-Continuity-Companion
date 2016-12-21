@@ -28,12 +28,16 @@ input {
 	width: 300px;
 }
 
-.form-container {
-	margin-top: 15px;
-	width: 100%;
+form {
+	text-align: center;
+	margin-top: 50px;
 }
 
-.character-container {
+.app-instructions > p {
+	text-align: center;
+	background-color: rgba(159, 163, 168, .5);
+}
+.character-section {
 	margin-top: 15px;
 }
 
@@ -79,6 +83,7 @@ input {
 .comic-descrip {
 	text-align: left;
 	padding: 20px;
+	min-height: 105px;
 }
 
 .comic-descrip h3 {

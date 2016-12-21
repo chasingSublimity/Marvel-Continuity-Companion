@@ -21,30 +21,24 @@
 
 <body>
 	<header>
-		<div class="row">
-			<div class="col-12">
-				<h1>Marvel Comic Covers</h1>
-				<p>A visual history of comic book characters</p>
-			</div>
-		</div>
+		<h1>Marvel Comic Covers</h1>
+		<p>A visual history of comic book characters</p>
 	</header>
 	<main>
-		<div class="row">
-			<div class="col-6 form-container">
-				<form action="#" class='js-search-form'>
-					<input type="text" placeholder="Search for your favorite Marvel Character" class="js-search-input">
-					<button type="submit">Search</button>
-				</form>
+		<form action="#" class='js-search-form'>
+			<input type="text" placeholder="Search for your favorite Marvel Character" class="js-search-input">
+		</form>
+		<section class="app-instructions">
+			<p>Some Inspiring text here instructing the user how to operate the App.</p>
+		</section>
+		<section class="character-section js-character-section">
+		</section>
+		<section>
+			<div class="js-search-results-1 row">
 			</div>
-		</div>
-		<div class="row">
-			<div class="character-container js-character-container">
+			<div class="js-search-results-2 row">
 			</div>
-		</div>
-		<div class="row">
-			<div class="js-search-results">
-			</div>
-		</div>
+		</section>
 	</main>
 	<script src="https://code.jquery.com/jquery.min.js"></script>
 	<script src="app.js"></script>

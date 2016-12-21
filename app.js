@@ -19,7 +19,7 @@ function getComicCover(object) {
 		format: 'comic',
 		formatType: 'comic',
 		noVariants: true,
-		limit: 6,
+		limit: 8,
 		orderBy: 'onsaleDate',
 		apikey: 'b5a985cb816977af5a8da412277c108b'
 	};
@@ -31,8 +31,7 @@ function displayCharacterInfo(returnObject) {
 	var apiResults = '';
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
-			apiResults += 
-				'<div class="col-3">' +
+			apiResults +=
 					'<div class="char-info">' +
 						'<img src="' + item.thumbnail.path + '/standard_fantastic.' + item.thumbnail.extension + '" class="char-img">' +
 						'<div class="char-descrip">' +
@@ -44,16 +43,18 @@ function displayCharacterInfo(returnObject) {
 	} else {
 		apiResults += '<p>No results</p>';
 	}
-	$('.js-character-container').html(apiResults);
+	$('.js-character-section').html(apiResults);
 }
 
 // function to display Comic data
 function displayComicInfo(returnObject) {
-	var apiResults = '';
+	var apiResults1 = '';
+	var apiResults2 = '';
+	var comicCounter = 0;
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
-			apiResults +=
-					'<div class="col-4">' +
+			var htmlFrame =
+					'<div class="col-3">' +
 						'<div class="cover-container js-cover-container">' +
 							'<div class="comic-info">' +
 								'<img src="' + item.thumbnail.path +'/standard_fantastic.' + item.thumbnail.extension + '" class="comic-img">' +
@@ -62,19 +63,26 @@ function displayComicInfo(returnObject) {
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					'</div>'
-		;});
+					'</div>';
+			if (comicCounter < 4)  {
+				apiResults1 += htmlFrame;
+			} else {
+				apiResults2 += htmlFrame;
+			}
+			comicCounter++;
+		});
 	} else {
-		apiResults += '<p>No results</p>';
+		apiResults1 += '<p>No results</p>';
 	}
-	$('.js-search-results').html(apiResults);
+	$('.js-search-results-1').html(apiResults1);
+	$('.js-search-results-2').html(apiResults2);
 }
 
 // function to listen for submit 
 function watchSubmit() {
 	$('.js-search-form').submit(function (event) {
 		event.preventDefault();
-		// getCharacterId($(this).find('.js-search-input').val());
+		$('.app-instructions').hide();
 		getCharacterId($(this).find('.js-search-input').val());
 		$('.js-search-input').val('');
     $('.js-search-input').focus();
