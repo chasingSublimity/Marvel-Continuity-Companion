@@ -38,7 +38,9 @@ form {
 	background-color: rgba(159, 163, 168, .5);
 }
 .character-section {
-	margin-top: 15px;
+	max-width: 218.03px;
+	max-height: 218.03px;
+	margin: auto;
 }
 
 .char-info {
@@ -52,7 +54,7 @@ form {
 }
 
 .char-descrip {
-	text-align: left;
+  text-align: center;
 	padding: 20px;
 }
 
@@ -64,6 +66,10 @@ form {
 .char-descrip p {
 	margin-top: 8px;
 	margin-bottom: 8px;
+}
+
+.comic-section {
+	margin-top: 75px;
 }
 
 .comic-container {
@@ -98,5 +104,14 @@ form {
 }
 
 .cover-container {
-	display: inline-block;
+	text-align: center;
+}
+
+@media only screen and (max-width: 640px) {
+	* {
+		text-align: center;
+	}
+	input {
+		width: 100%;
+	}
 }
