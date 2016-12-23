@@ -89,22 +89,27 @@ form {
 .comic-descrip {
 	text-align: left;
 	padding: 20px;
-	min-height: 105px;
+	min-height: 128px;
 }
 
 .comic-descrip h3 {
-	margin-top: 0px;
-	margin-bottom: 0px;
-
-}
-
-.comic-descrip p {
-	margin-top: 8px;
-	margin-bottom: 8px;
+	text-align:center;
+	margin: auto;
 }
 
 .cover-container {
 	text-align: center;
+}
+
+footer {
+	text-align: center;
+	margin-top: 37px;
+  margin-bottom: 30px;
+}
+
+footer > a {
+	background-color: rgba(159, 163, 168, .5);
+  color: whitesmoke;
 }
 
 @media only screen and (max-width: 640px) {

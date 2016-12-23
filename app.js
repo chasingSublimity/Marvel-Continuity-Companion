@@ -22,7 +22,7 @@ function getComicInfo(object) {
 		formatType: 'comic',
 		noVariants: false,
 		limit: 100,
-		orderBy: 'onsaleDate',
+		orderBy: '-onsaleDate',
 		apikey: 'b5a985cb816977af5a8da412277c108b'
 	};
 	$.getJSON(endpoint, comicQuery, displayComicCards);
@@ -83,10 +83,13 @@ function displayComicCards(returnObject) {
 	} else {
 		apiResults1 += '<p>No Results</p>';
 	}
+	// Renders search results
 	$('.js-search-results-1').html(apiResults1);
 	$('.js-search-results-2').html(apiResults2);
-}
+	// Renders attribution info
+	$('footer').html(returnObject.attributionHTML);
 
+}
 // function to listen for submit 
 function watchSubmit() {
 	$('.js-search-form').submit(function (event) {
