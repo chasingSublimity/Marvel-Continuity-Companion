@@ -8,12 +8,12 @@ function getCharacterId(searchTerm) {
 	};
  	$.getJSON(marvelCharacterEndPoint, characterQuery, function(object) {
  		displayCharacterCard(object);
- 		getComicCover(object);
+ 		getComicInfo(object);
  	});
 }
 
 // function to use CharacterId to get comic info from marvel API
-function getComicCover(object) {
+function getComicInfo(object) {
 	var id = object.data.results[0].id;
 	var endpoint = 'https://gateway.marvel.com/v1/public/characters/' + id + '/comics';
 	var comicQuery = {
@@ -21,7 +21,7 @@ function getComicCover(object) {
 		format: 'comic',
 		formatType: 'comic',
 		noVariants: false,
-		limit: 8,
+		limit: 100,
 		orderBy: 'onsaleDate',
 		apikey: 'b5a985cb816977af5a8da412277c108b'
 	};
@@ -53,9 +53,14 @@ function displayComicCards(returnObject) {
 	var apiResults1 = '';
 	var apiResults2 = '';
 	var comicCounter = 0;
+	// Checks to see if API returned any results
 	if (returnObject.data.count > 0) {
 		returnObject.data.results.forEach(function(item) {
-			var htmlFrame =
+		// Url that API returns if no image accompanies the comic object
+		var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+			// Only displays comic with images
+			if (item.thumbnail.path !== noImgUrl) {
+				var htmlFrame = 
 					'<div class="col-3">' +
 						'<div class="cover-container js-cover-container">' +
 							'<div class="comic-info">' +
@@ -66,15 +71,17 @@ function displayComicCards(returnObject) {
 							'</div>' +
 						'</div>' +
 					'</div>';
-			if (comicCounter < 4)  {
-				apiResults1 += htmlFrame;
-			} else {
-				apiResults2 += htmlFrame;
+				// Controls which element the results get rendered into 
+				if (comicCounter < 4) {
+					apiResults1 += htmlFrame;
+				} else {
+					apiResults2 += htmlFrame;
+				}
+				comicCounter++;
 			}
-			comicCounter++;
 		});
 	} else {
-		apiResults1 += '<p>No results</p>';
+		apiResults1 += '<p>No Results</p>';
 	}
 	$('.js-search-results-1').html(apiResults1);
 	$('.js-search-results-2').html(apiResults2);
@@ -85,7 +92,15 @@ function watchSubmit() {
 	$('.js-search-form').submit(function (event) {
 		event.preventDefault();
 		$('.app-instructions').hide();
+
+		// Search-result area reset
+    $('.js-search-results-1').html('');
+		$('.js-search-results-2').html('');
+
+		// Api calls and rendering
 		getCharacterId($(this).find('.js-search-input').val());
+
+		// Search input reset 
 		$('.js-search-input').val('');
     $('.js-search-input').focus();
 	});
