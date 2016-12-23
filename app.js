@@ -65,7 +65,7 @@ function displayComicCards(returnObject) {
 					'<div class="col-3">' +
 						'<div class="cover-container js-cover-container">' +
 							'<div class="comic-info">' +
-								'<a href="' + returnObject.data.results[i].urls[0].url + '">' + '"<img src="' + returnObject.data.results[i].thumbnail.path +'/standard_fantastic.' + returnObject.data.results[i].thumbnail.extension + '" class="comic-img">' + '</a>' +
+								'<a href="' + returnObject.data.results[i].urls[0].url + '">' + '<img src="' + returnObject.data.results[i].thumbnail.path +'/detail.' + returnObject.data.results[i].thumbnail.extension + '" class="comic-img">' + '</a>' +
 								'<div class="comic-descrip">' +
 									'<h3>' + returnObject.data.results[i].title + '</h3>' +
 								'</div>' +
