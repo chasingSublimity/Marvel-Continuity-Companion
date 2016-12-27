@@ -1,7 +1,7 @@
 // endpoint variable
 const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters';
-
-// constant variables
+const displayAtATime = 8;
+const coversPerRow = 4;
 
 // variable to hold state
 // function initstate
@@ -87,7 +87,7 @@ const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters
 
 	// render character card
 	function displayCharacterCard(state) {
-		// check to see if results were returned
+		// verify results were returned, then display character card
 		if (state.character.name !== '') {
 			$('.js-character-section').html(
 				'<div class="char-info">' +
@@ -109,7 +109,7 @@ function displayComicCards(state){ // add display at a time variable
 	var comicCounter = 0;
 	// verify comics were returned, then display comic cards
 	if (state.totalResults > 0) {
-		for (i=state.comicsStartPoint; i < (state.comicsStartPoint + 8); i++) {
+		for (i=state.comicsStartPoint; i < (state.comicsStartPoint + displayAtATime); i++) {
 			// url that API returns if no image accompanies the comic object
 			var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
 			// filters out comic objects without images
@@ -128,7 +128,7 @@ function displayComicCards(state){ // add display at a time variable
 						'</div>' +
 					'</div>';
 				// controls which element the results get rendered into
-				if (comicCounter < 4) {
+				if (comicCounter < coversPerRow) {
 					apiResults1 += htmlFrame;
 				} else {	
 					apiResults2 += htmlFrame;
@@ -136,11 +136,11 @@ function displayComicCards(state){ // add display at a time variable
 				comicCounter++;
 			}
 		}
-		state.comicsStartPoint += 8;
+		state.comicsStartPoint += displayAtATime;
 	} else {
 		apiResults1 += '<p>No Results</p>';
 }
-	
+
 	// Renders search results
 	$('.js-search-results-1').html(apiResults1);
 	$('.js-search-results-2').html(apiResults2);
@@ -162,16 +162,7 @@ function displayComicCards(state){ // add display at a time variable
 	    $('.js-search-results-1').html('');
 			$('.js-search-results-2').html('');
 			// reset state
-			state = {
-				character: {
-					name: '',
-					imagePath: '',
-					imageExtension: ''
-				},
-				comics: [],
-				comicsStartPoint: 0,
-				totalResults: 0
-			};
+			state = {character: {name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, totalResults: 0};
 			// Api calls and rendering
 			getCharacterId(state, $(this).find('.js-search-input').val());
 			// Search input reset 
