@@ -4,16 +4,18 @@ const displayAtATime = 8;
 const coversPerRow = 4;
 
 // variable to hold state
-// function initstate
 	var state = {
+		attributionHTML: '',
 		character: {
+			id: null,
 			name: '',
 			imagePath: '',
 			imageExtension: ''
 		},
 		comics: [],
 		comicsStartPoint: 0,
-		totalResults: 0
+		comicsApiCallOffset: 0,
+		totalResults: 0,
 	};
 
 // functions to fetch info from API
@@ -27,30 +29,50 @@ const coversPerRow = 4;
 	 	$.getJSON(marvelCharacterEndPoint, characterQuery, function(object) {
 	 		pushCharacterObject(state, object);
 	 		displayCharacterCard(state);
-	 		getComicInfo(state, object);
+	 		getComicInfo(state);
 	 	});
 	}
 
 	// get comic covers
-	function getComicInfo(state, resultObject) {
-	if (resultObject.data.count > 0) {
-		var id = resultObject.data.results[0].id;
-		var endpoint = 'https://gateway.marvel.com/v1/public/characters/' + id + '/comics';
-		var comicQuery = {
-			characterId: id,
-			format: 'comic',
-			formatType: 'comic',
-			noVariants: false,
-			limit: 16,
-			orderBy: '-onsaleDate',
-			apikey: 'b5a985cb816977af5a8da412277c108b'
-		};
-		$.getJSON(endpoint, comicQuery, function(object) {
-			pushComicObjects(state, object);
-			displayComicCards(state, object);
-		});
+	function getComicInfo(state) {
+		/* The if statement below determines by what number the Api return limit and offset is muliplied by. This enables 
+		the getComicInfo function to be attached to the More Comics button and reused. */
+		var limitMultiplier, offsetMultiplier = null;
+		/* on the first run, the multipliers are set in such a way 
+		that the limit is set to 16 and the offset is set to 0*/
+		if (state.comicsStartPoint === 0) {
+			limitMultiplier = 2;
+			offsetMultiplier = 0;
+		// On the second run, the multipliers are such that the limit is set to 8 and the offset is set to 16
+		} else if (state.comicsStartPoint === displayAtATime) {
+			limitMultiplier = 1;
+			offsetMultiplier = 2;
+		// on any subsequent runs, the multiplers are such that the limit is 8 and the offset is incremented by 8
+		} else {
+			limitMultiplier = 1;
+			offsetMultiplier = 1;
+		}
+		// checks to see if results were returned, then retrieves data from api
+		if (state.character.id !== null) {
+			var id = state.character.id;
+			var endpoint = marvelCharacterEndPoint + '/' + id + '/comics';
+			var comicQuery = {
+				characterId: id,
+				format: 'comic',
+				formatType: 'comic',
+				noVariants: false,
+				limit: (displayAtATime * limitMultiplier),
+				offset: (state.comicsApiCallOffset + (displayAtATime * offsetMultiplier)),
+				orderBy: '-onsaleDate',
+				apikey: 'b5a985cb816977af5a8da412277c108b'
+			};
+			$.getJSON(endpoint, comicQuery, function(object) {
+				pushComicObjects(state, object);
+				displayComicCards(state, object);
+			});
+		}
+
 	}
-}
 
 // functions to alter state
 	
@@ -58,6 +80,7 @@ const coversPerRow = 4;
 	function pushCharacterObject(state, characterObject) {
 		// verify object was returned, then push object to state
 		if (characterObject.data.count > 0) {
+			state.character.id = characterObject.data.results[0].id;
 			state.character.name = characterObject.data.results[0].name;
 			state.character.imagePath = characterObject.data.results[0].thumbnail.path;
 			state.character.imageExtension = characterObject.data.results[0].thumbnail.extension;
@@ -103,52 +126,52 @@ const coversPerRow = 4;
 		}
 	}
 
-function displayComicCards(state){ // add display at a time variable
-	var apiResults1 = '';
-	var apiResults2 = '';
-	var comicCounter = 0;
-	// verify comics were returned, then display comic cards
-	if (state.totalResults > 0) {
-		for (i=state.comicsStartPoint; i < (state.comicsStartPoint + displayAtATime); i++) {
-			// url that API returns if no image accompanies the comic object
-			var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
-			// filters out comic objects without images
-			if (state.comics.comicImgPath !== noImgUrl) {
-				var htmlFrame = 
-					'<div class="col-3">' +
-						'<div class="cover-container js-cover-container">' +
-							'<div class="comic-info">' +
-								'<a href="' + state.comics[i].comicLink + '">' + 
-									'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
-								'</a>' +
-								'<div class="comic-descrip">' +
-									'<h3>' + state.comics[i].comicTitle + '</h3>' +
+	function displayComicCards(state){
+		var apiResults1 = '';
+		var apiResults2 = '';
+		var comicCounter = 0;
+		// verify comics were returned, then display comic cards
+		if (state.totalResults > 0) {
+			for (i=state.comicsStartPoint; i < (state.comicsStartPoint + displayAtATime); i++) {
+				// url that API returns if no image accompanies the comic object
+				var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+				// filters out comic objects without images
+				if (state.comics.comicImgPath !== noImgUrl) {
+					var htmlFrame = 
+						'<div class="col-3">' +
+							'<div class="cover-container js-cover-container">' +
+								'<div class="comic-info">' +
+									'<a href="' + state.comics[i].comicLink + '">' + 
+										'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
+									'</a>' +
+									'<div class="comic-descrip">' +
+										'<h3>' + state.comics[i].comicTitle + '</h3>' +
+									'</div>' +
 								'</div>' +
 							'</div>' +
-						'</div>' +
-					'</div>';
-				// controls which element the results get rendered into
-				if (comicCounter < coversPerRow) {
-					apiResults1 += htmlFrame;
-				} else {	
-					apiResults2 += htmlFrame;
+						'</div>';
+					// controls which element the results get rendered into
+					if (comicCounter < coversPerRow) {
+						apiResults1 += htmlFrame;
+					} else {	
+						apiResults2 += htmlFrame;
+					}
+					comicCounter++;
 				}
-				comicCounter++;
 			}
-		}
-		state.comicsStartPoint += displayAtATime;
-	} else {
-		apiResults1 += '<p>No Results</p>';
-}
+			state.comicsStartPoint += displayAtATime;
+		} else {
+			apiResults1 += '<p>No Results</p>';
+	}
 
-	// Renders search results
-	$('.js-search-results-1').html(apiResults1);
-	$('.js-search-results-2').html(apiResults2);
-	// Render "More Comics Button"
-	$('.button-div').show();
-	// Renders attribution info
-	$('footer').html(state.attributionHTML);
-}
+		// Renders search results
+		$('.js-search-results-1').html(apiResults1);
+		$('.js-search-results-2').html(apiResults2);
+		// Render "More Comics Button"
+		$('.button-div').show();
+		// Renders attribution info
+		$('footer').html(state.attributionHTML);
+	}
 
 // event listeners to call functions
 
@@ -162,7 +185,7 @@ function displayComicCards(state){ // add display at a time variable
 	    $('.js-search-results-1').html('');
 			$('.js-search-results-2').html('');
 			// reset state
-			state = {character: {name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, totalResults: 0};
+			state = {attributionHTML: '' , character: {id: null, name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, comicsApiCallOffset: 0, totalResults: 0};
 			// Api calls and rendering
 			getCharacterId(state, $(this).find('.js-search-input').val());
 			// Search input reset 
@@ -174,7 +197,8 @@ function displayComicCards(state){ // add display at a time variable
 	// function to listen for "see more comics"
 	function watchMoreComics() {
 	$('.button-div').on('click', '.more-comics', function(event) {
-		displayComicCards();
+		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
+		getComicInfo(state);
 	});
 }
 
