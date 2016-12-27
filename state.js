@@ -70,8 +70,9 @@ const coversPerRow = 4;
 				pushComicObjects(state, object);
 				displayComicCards(state, object);
 			});
+			// increments state.comicsApiCallOffset by the amount of comic objects called
+			state.comicsApiCallOffset += comicQuery.limit;
 		}
-
 	}
 
 // functions to alter state
