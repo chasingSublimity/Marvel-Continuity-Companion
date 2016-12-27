@@ -73,11 +73,13 @@ const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters
 					{
 						comicLink: item.urls[0].url,
 						comicImgPath: item.thumbnail.path,
-						comicImgExtension: item.thumbnail.extension
+						comicImgExtension: item.thumbnail.extension,
+						comicTitle: item.title
 					}
 				);
 			});
 			state.totalResults = comicObject.data.total;
+			state.attributionHTML = comicObject.attributionHTML;
 		}
 	}
 
@@ -101,52 +103,52 @@ const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters
 		}
 	}
 
-	// render comic cards
-	function displayComicCards(state, resultObject){ // add display at a time variable
-		var apiResults1 = '';
-		var apiResults2 = '';
-		var comicCounter = 0;
-		// verify comics were returned, then display comic cards
-		if (resultObject.data.count > 0) {
-			for (i=state.comicsStartPoint; i < (state.comicsStartPoint + 8); i++) {
-				// url that API returns if no image accompanies the comic object
-				var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
-				// filters out comic objects without images
-				if (resultObject.data.results[i].thumbnail.path !== noImgUrl) {
-					var htmlFrame = 
-						'<div class="col-3">' +
-							'<div class="cover-container js-cover-container">' +
-								'<div class="comic-info">' +
-									'<a href="' + resultObject.data.results[i].urls[0].url + '">' + 
-										'<img src="' + resultObject.data.results[i].thumbnail.path +'/detail.' + resultObject.data.results[i].thumbnail.extension + '" class="comic-img">' + 
-									'</a>' +
-									'<div class="comic-descrip">' +
-										'<h3>' + resultObject.data.results[i].title + '</h3>' +
-									'</div>' +
+function displayComicCards(state){ // add display at a time variable
+	var apiResults1 = '';
+	var apiResults2 = '';
+	var comicCounter = 0;
+	// verify comics were returned, then display comic cards
+	if (state.totalResults > 0) {
+		for (i=state.comicsStartPoint; i < (state.comicsStartPoint + 8); i++) {
+			// url that API returns if no image accompanies the comic object
+			var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+			// filters out comic objects without images
+			if (state.comics.comicImgPath !== noImgUrl) {
+				var htmlFrame = 
+					'<div class="col-3">' +
+						'<div class="cover-container js-cover-container">' +
+							'<div class="comic-info">' +
+								'<a href="' + state.comics[i].comicLink + '">' + 
+									'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
+								'</a>' +
+								'<div class="comic-descrip">' +
+									'<h3>' + state.comics[i].comicTitle + '</h3>' +
 								'</div>' +
 							'</div>' +
-						'</div>';
-					// controls which element the results get rendered into
-					if (comicCounter < 4) {
-						apiResults1 += htmlFrame;
-					} else {	
-						apiResults2 += htmlFrame;
-					}
-					comicCounter++;
+						'</div>' +
+					'</div>';
+				// controls which element the results get rendered into
+				if (comicCounter < 4) {
+					apiResults1 += htmlFrame;
+				} else {	
+					apiResults2 += htmlFrame;
 				}
+				comicCounter++;
 			}
-			state.comicsStartPoint += 8;
-		} else {
-			apiResults1 += '<p>No Results</p>';
 		}
-		// Renders search results
-		$('.js-search-results-1').html(apiResults1);
-		$('.js-search-results-2').html(apiResults2);
-		// Render "More Comics Button"
-		$('.button-div').show();
-		// Renders attribution info
-		$('footer').html(resultObject.attributionHTML);
-	}
+		state.comicsStartPoint += 8;
+	} else {
+		apiResults1 += '<p>No Results</p>';
+}
+	
+	// Renders search results
+	$('.js-search-results-1').html(apiResults1);
+	$('.js-search-results-2').html(apiResults2);
+	// Render "More Comics Button"
+	$('.button-div').show();
+	// Renders attribution info
+	$('footer').html(state.attributionHTML);
+}
 
 // event listeners to call functions
 
@@ -171,7 +173,6 @@ const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters
 				totalResults: 0
 			};
 			// Api calls and rendering
-			console.log($('.js-search-input').val());
 			getCharacterId(state, $(this).find('.js-search-input').val());
 			// Search input reset 
 			$('.js-search-input').val('');
