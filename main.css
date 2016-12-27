@@ -12,8 +12,12 @@ html {
 
 header {
 	display: block;
-	width: 100%;
-	background-color: rgba(159, 163, 168, .5);
+  width: 100%;
+  background-color: rgba(159, 163, 168, .5);
+  border: 1px solid #E5E5E5;
+  margin-top: 15px;
+  padding: 10px;
+  text-align: center;
 }
 
 header h1 {
@@ -33,14 +37,21 @@ form {
 	margin-top: 50px;
 }
 
-.app-instructions > p {
+.app-instructions p {
 	text-align: center;
 	background-color: rgba(159, 163, 168, .5);
+	border: 1px solid #E5E5E5;
 }
 .character-section {
 	max-width: 218.03px;
 	max-height: 218.03px;
 	margin: auto;
+}
+
+.character-section p {
+	background-color: rgba(159, 163, 168, .5);
+	border: 1px solid #E5E5E5;
+	text-align: center;
 }
 
 .char-info {
@@ -84,6 +95,7 @@ form {
 
 .comic-img {
 	width: 100%;
+	max-height: 331px;
 }
 
 .comic-descrip {
@@ -99,6 +111,11 @@ form {
 
 .cover-container {
 	text-align: center;
+}
+
+.button-div {
+	text-align: center;
+	margin-top: 20px;
 }
 
 footer {
