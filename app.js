@@ -68,7 +68,7 @@ const coversPerRow = 4;
 			};
 			$.getJSON(endpoint, comicQuery, function(object) {
 				pushComicObjects(state, object);
-				displayComicCards(state, object);
+				displayComicCards(state);
 			});
 			// increments state.comicsApiCallOffset by the amount of comic objects called
 			state.comicsApiCallOffset += comicQuery.limit;

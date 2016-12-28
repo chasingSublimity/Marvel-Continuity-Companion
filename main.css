@@ -41,9 +41,9 @@ form {
 	text-align: center;
 	background-color: rgba(159, 163, 168, .5);
 	border: 1px solid #E5E5E5;
-	color: whitesmoke;
 	padding: 5px;
 }
+
 .character-section {
 	max-width: 218.03px;
 	max-height: 218.03px;
@@ -129,7 +129,7 @@ footer {
 
 footer > a {
 	background-color: rgba(159, 163, 168, .5);
-  color: whitesmoke;
+  color: black;
 }
 
 @media only screen and (max-width: 640px) {
