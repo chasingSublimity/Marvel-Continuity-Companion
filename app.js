@@ -62,7 +62,7 @@ const coversPerRow = 4;
 				formatType: 'comic',
 				noVariants: false,
 				limit: (displayAtATime * limitMultiplier),
-				offset: (state.comicsApiCallOffset + (displayAtATime * offsetMultiplier)),
+				offset: (state.comics.length),
 				orderBy: '-onsaleDate',
 				apikey: 'b5a985cb816977af5a8da412277c108b'
 			};
