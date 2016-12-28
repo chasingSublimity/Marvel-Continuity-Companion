@@ -127,10 +127,8 @@ const coversPerRow = 4;
 		}
 	}
 
-	function displayComicCards(state){
-		var apiResults1 = '';
-		var apiResults2 = '';
-		var comicCounter = 0;
+	function displayComicCards(state) {
+		var comicCardsHTML = '';
 		// verify comics were returned, then display comic cards
 		if (state.totalResults > 0) {
 			for (i=state.comicsStartPoint; i < (state.comicsStartPoint + displayAtATime); i++) {
@@ -139,35 +137,29 @@ const coversPerRow = 4;
 				// filters out comic objects without images
 				if (state.comics.comicImgPath !== noImgUrl) {
 					var htmlFrame = 
-						'<div class="col-3">' +
-							'<div class="cover-container js-cover-container">' +
-								'<div class="comic-info">' +
-									'<a href="' + state.comics[i].comicLink + '">' + 
-										'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
-									'</a>' +
-									'<div class="comic-descrip">' +
-										'<h3>' + state.comics[i].comicTitle + '</h3>' +
+						'<div class= row js-search-results-' + (i+1) + '>' + 
+							'<div class="col-3">' +
+								'<div class="cover-container js-cover-container">' +
+									'<div class="comic-info">' +
+										'<a href="' + state.comics[i].comicLink + '">' + 
+											'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
+										'</a>' +
+										'<div class="comic-descrip">' +
+											'<h3>' + state.comics[i].comicTitle + '</h3>' +
+										'</div>' +
 									'</div>' +
 								'</div>' +
 							'</div>' +
 						'</div>';
-					// controls which element the results get rendered into
-					if (comicCounter < coversPerRow) {
-						apiResults1 += htmlFrame;
-					} else {	
-						apiResults2 += htmlFrame;
-					}
-					comicCounter++;
+					comicCardsHTML += htmlFrame;
 				}
 			}
 			state.comicsStartPoint += displayAtATime;
 		} else {
-			apiResults1 += '<p>No Results</p>';
-	}
-
+			comicCardsHTML += '<p>No Results</p>';
+		}
 		// Renders search results
-		$('.js-search-results-1').html(apiResults1);
-		$('.js-search-results-2').html(apiResults2);
+		$('.js-comic-section').html(comicCardsHTML);
 		// Render "More Comics Button"
 		$('.button-div').show();
 		// Renders attribution info

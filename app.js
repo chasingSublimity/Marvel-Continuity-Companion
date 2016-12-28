@@ -1,123 +1,209 @@
-var marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters';
-var displayComicCardsStartPoint = 0;
+// endpoint variable
+const marvelCharacterEndPoint = 'https://gateway.marvel.com/v1/public/characters';
+const displayAtATime = 8;
+const coversPerRow = 4;
 
-// function to get character data through Marvel API
-function getCharacterId(searchTerm) {
-	var characterQuery = {
-		name: searchTerm,
-		apikey: 'b5a985cb816977af5a8da412277c108b'
+// variable to hold state
+	var state = {
+		attributionHTML: '',
+		character: {
+			id: null,
+			name: '',
+			imagePath: '',
+			imageExtension: ''
+		},
+		comics: [],
+		comicsStartPoint: 0,
+		comicsApiCallOffset: 0,
+		totalResults: 0,
 	};
- 	$.getJSON(marvelCharacterEndPoint, characterQuery, function(object) {
- 		displayCharacterCard(object);
- 		getComicInfo(object);
- 	});
-}
 
-// function to use CharacterId to get comic info from marvel API
-function getComicInfo(object) {
-	var id = object.data.results[0].id;
-	var endpoint = 'https://gateway.marvel.com/v1/public/characters/' + id + '/comics';
-	var comicQuery = {
-		characterId: id,
-		format: 'comic',
-		formatType: 'comic',
-		noVariants: false,
-		limit: 8,
-		orderBy: '-onsaleDate',
-		apikey: 'b5a985cb816977af5a8da412277c108b'
-	};
-	$.getJSON(endpoint, comicQuery, function(object) {
-		displayComicCards(object, displayComicCardsStartPoint);
-	});
-}
+// functions to fetch info from API
 
-// function to display Character data
-function displayCharacterCard(returnObject) {
-	var apiResults = '';
-	if (returnObject.data.count > 0) {
-		returnObject.data.results.forEach(function(item) {
-			apiResults +=
-				'<div class="char-info">' +
-					'<img src="' + item.thumbnail.path + '/standard_fantastic.' + item.thumbnail.extension + '" class="char-img">' +
+	// get character ID
+	function getCharacterId(state, searchTerm) {
+		var characterQuery = {
+			name: searchTerm,
+			apikey: 'b5a985cb816977af5a8da412277c108b'
+		};
+	 	$.getJSON(marvelCharacterEndPoint, characterQuery, function(object) {
+	 		pushCharacterObject(state, object);
+	 		displayCharacterCard(state);
+	 		getComicInfo(state);
+	 	});
+	}
+
+	// get comic covers
+	function getComicInfo(state) {
+		/* The if statement below determines by what number the Api return limit and offset is muliplied by. This enables 
+		the getComicInfo function to be attached to the More Comics button and reused. */
+		var limitMultiplier, offsetMultiplier = null;
+		/* on the first run, the multipliers are set in such a way 
+		that the limit is set to 16 and the offset is set to 0*/
+		if (state.comicsStartPoint === 0) {
+			limitMultiplier = 2;
+			offsetMultiplier = 0;
+		// On the second run, the multipliers are such that the limit is set to 8 and the offset is set to 16
+		} else if (state.comicsStartPoint === displayAtATime) {
+			limitMultiplier = 1;
+			offsetMultiplier = 2;
+		// on any subsequent runs, the multiplers are such that the limit is 8 and the offset is incremented by 8
+		} else {
+			limitMultiplier = 1;
+			offsetMultiplier = 1;
+		}
+		// checks to see if results were returned, then retrieves data from api
+		if (state.character.id !== null) {
+			var id = state.character.id;
+			var endpoint = marvelCharacterEndPoint + '/' + id + '/comics';
+			var comicQuery = {
+				characterId: id,
+				format: 'comic',
+				formatType: 'comic',
+				noVariants: false,
+				limit: (displayAtATime * limitMultiplier),
+				offset: (state.comicsApiCallOffset + (displayAtATime * offsetMultiplier)),
+				orderBy: '-onsaleDate',
+				apikey: 'b5a985cb816977af5a8da412277c108b'
+			};
+			$.getJSON(endpoint, comicQuery, function(object) {
+				pushComicObjects(state, object);
+				displayComicCards(state, object);
+			});
+			// increments state.comicsApiCallOffset by the amount of comic objects called
+			state.comicsApiCallOffset += comicQuery.limit;
+		}
+	}
+
+// functions to alter state
+	
+	// push character object to state
+	function pushCharacterObject(state, characterObject) {
+		// verify object was returned, then push object to state
+		if (characterObject.data.count > 0) {
+			state.character.id = characterObject.data.results[0].id;
+			state.character.name = characterObject.data.results[0].name;
+			state.character.imagePath = characterObject.data.results[0].thumbnail.path;
+			state.character.imageExtension = characterObject.data.results[0].thumbnail.extension;
+		}
+	}
+
+	// push comic objects to state.comics array
+	function pushComicObjects(state, comicObject) {
+		// verify comic objects were returned, then push objects to state
+		if (comicObject.data.count > 0) {
+			comicObject.data.results.forEach(function(item) {
+				state.comics.push(
+					{
+						comicLink: item.urls[0].url,
+						comicImgPath: item.thumbnail.path,
+						comicImgExtension: item.thumbnail.extension,
+						comicTitle: item.title
+					}
+				);
+			});
+			state.totalResults = comicObject.data.total;
+			state.attributionHTML = comicObject.attributionHTML;
+		}
+	}
+
+// functions to render state
+
+	// render character card
+	function displayCharacterCard(state) {
+		// verify results were returned, then display character card
+		if (state.character.name !== '') {
+			$('.js-character-section').html(
+				'<div class="char-info" hidden="true">' +
+					'<img src="' + state.character.imagePath + '/standard_fantastic.' + state.character.imageExtension + '" class="char-img">' +
 					'<div class="char-descrip">' +
-						'<h3>' + item.name + '</h3>' +
+						'<h3>' + state.character.name + '</h3>' +
 					'</div>' +
 				'</div>'
-			;});
-	} else {
-		apiResults += '<p>No results</p>';
+			);
+		} else {
+			// display no results
+			$('.js-character-section').html('<p>No results</p>');
+		}
+		$('.char-info').fadeIn();
 	}
-	$('.js-character-section').html(apiResults);
-}
 
-// function to display Comic data
-function displayComicCards(returnObject, startPoint) {
-	var apiResults1 = '';
-	var apiResults2 = '';
-	var comicCounter = 0;
-	// Checks to see if API returned any results
-	if (returnObject.data.count > 0) {
-		for (i=startPoint; i < (startPoint + 8); i++) {
-			// Url that API returns if no image accompanies the comic object
-			var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
-			// Only displays comic with images
-			if (returnObject.data.results[i].thumbnail.path !== noImgUrl) {
-				var htmlFrame = 
-					'<div class="col-3">' +
-						'<div class="cover-container js-cover-container">' +
-							'<div class="comic-info">' +
-								'<a href="' + returnObject.data.results[i].urls[0].url + '">' + 
-									'<img src="' + returnObject.data.results[i].thumbnail.path +'/detail.' + returnObject.data.results[i].thumbnail.extension + '" class="comic-img">' + 
-								'</a>' +
-								'<div class="comic-descrip">' +
-									'<h3>' + returnObject.data.results[i].title + '</h3>' +
+	function displayComicCards(state){
+		var apiResults1 = '';
+		var apiResults2 = '';
+		var comicCounter = 0;
+		// verify comics were returned, then display comic cards
+		if (state.totalResults > 0) {
+			for (i=state.comicsStartPoint; i < (state.comicsStartPoint + displayAtATime); i++) {
+				// url that API returns if no image accompanies the comic object
+				var noImgUrl = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+				// filters out comic objects without images
+				if (state.comics.comicImgPath !== noImgUrl) {
+					var htmlFrame = 
+						'<div class="col-3">' +
+							'<div class="cover-container js-cover-container">' +
+								'<div class="comic-info" hidden="true">' +
+									'<a href="' + state.comics[i].comicLink + '">' + 
+										'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
+									'</a>' +
+									'<div class="comic-descrip">' +
+										'<h3>' + state.comics[i].comicTitle + '</h3>' +
+									'</div>' +
 								'</div>' +
 							'</div>' +
-						'</div>' +
-					'</div>';
-				// Controls which element the results get rendered into 
-				if (comicCounter < 4) {
-					apiResults1 += htmlFrame;
-				} else {
-					apiResults2 += htmlFrame;
+						'</div>';
+					// controls which element the results get rendered into
+					if (comicCounter < coversPerRow) {
+						apiResults1 += htmlFrame;
+					} else {	
+						apiResults2 += htmlFrame;
+					}
+					comicCounter++;
 				}
-				comicCounter++;
 			}
-			displayComicCardsStartPoint += 8;
-		}
-	} else {
-		apiResults1 += '<p>No Results</p>';
+			state.comicsStartPoint += displayAtATime;
+		} else {
+			apiResults1 += '<p>No Results</p>';
 	}
-	// Renders search results
-	$('.js-search-results-1').html(apiResults1);
-	$('.js-search-results-2').html(apiResults2);
-	// Render "More Comics Button"
-	$('.button-div').show();
-	// Renders attribution info
-	$('footer').html(returnObject.attributionHTML);
-}
 
-// function to listen for submit 
-function watchSubmit() {
-	$('.js-search-form').submit(function (event) {
-		event.preventDefault();
-		$('.button-div').hide();
-		$('.app-instructions').hide();
-		// Search-result area reset
-    $('.js-search-results-1').html('');
-		$('.js-search-results-2').html('');
-		// Api calls and rendering
-		getCharacterId($(this).find('.js-search-input').val());
-		// Search input reset 
-		$('.js-search-input').val('');
-    $('.js-search-input').focus();
-	});
-}
+		// Renders search results
+		$('.js-search-results-1').html(apiResults1);
+		$('.js-search-results-2').html(apiResults2);
+		// Render "More Comics Button"
+		$('.button-div').show();
+		// Renders attribution info
+		$('footer').html(state.attributionHTML);
+		$('.js-comic-section').fadeIn();
+		$('.comic-info').fadeIn();
+	}
 
-// function to listen for "see more comics"
-function watchMoreComics() {
+// event listeners to call functions
+
+	// callback to render character card and first 8 comic cards, attached to a submit listener
+	function watchSubmit() {
+		$('.js-search-form').submit(function (event){
+			event.preventDefault();
+			$('.button-div').hide();
+			$('.app-instructions').fadeOut();
+			// Search-result area reset
+	    $('.js-search-results-1').html('');
+			$('.js-search-results-2').html('');
+			// reset state
+			state = {attributionHTML: '' , character: {id: null, name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, comicsApiCallOffset: 0, totalResults: 0};
+			// Api calls and rendering
+			getCharacterId(state, $(this).find('.js-search-input').val());
+			// Search input reset 
+			$('.js-search-input').val('');
+	    $('.js-search-input').focus();
+		});
+	}
+
+	// function to listen for "see more comics"
+	function watchMoreComics() {
 	$('.button-div').on('click', '.more-comics', function(event) {
-
+		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
+		$('.comic-info').fadeOut();
+		getComicInfo(state);
 	});
 }
 

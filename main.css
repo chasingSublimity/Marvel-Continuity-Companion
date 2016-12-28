@@ -33,14 +33,16 @@ input {
 }
 
 form {
-	text-align: center;
 	margin-top: 50px;
+	text-align: center;
 }
 
 .app-instructions p {
 	text-align: center;
 	background-color: rgba(159, 163, 168, .5);
 	border: 1px solid #E5E5E5;
+	color: whitesmoke;
+	padding: 5px;
 }
 .character-section {
 	max-width: 218.03px;
@@ -81,6 +83,7 @@ form {
 
 .comic-section {
 	margin-top: 75px;
+	min-height: 1050px;
 }
 
 .comic-container {
@@ -115,7 +118,7 @@ form {
 
 .button-div {
 	text-align: center;
-	margin-top: 20px;
+	margin-top: -30px;
 }
 
 footer {
