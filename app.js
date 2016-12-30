@@ -18,13 +18,6 @@ var state = {
 	totalResults: 0,
 };
 
-// reset UI
-function resetUi() {
-	$('.js-character-section').html('');
-	$('.js-comic-section').html('');
-
-}
-
 // get character ID
 function getCharacterInfo(state, searchTerm) {
 	var characterQuery = {
@@ -66,9 +59,7 @@ function getComicInfo(state, callback) {
 		};
 		$.getJSON(endpoint, comicQuery, function(object) {
 			pushComicObjects(state, object);
-			if (limit === 16) {
-				callback(state);
-			}
+			callback(state);
 		});
 		// increments state.comicsApiCallOffset by the amount of comic objects called
 		state.comicsApiCallOffset += comicQuery.limit;
@@ -174,6 +165,12 @@ function displayComicCards(state) {
 	$('.comic-info').fadeIn(1000);
 }
 
+// reset UI
+function resetUi() {
+	$('.js-character-section').html('');
+	$('.js-comic-section').html('');
+}
+
 // callback to render character card and first 8 comic cards, attached to a submit listener
 function watchSubmit() {
 	$('.js-search-form').submit(function (event){
@@ -199,10 +196,10 @@ function watchMoreComics() {
 	$('.button-div').on('click', '.more-comics', function(event) {
 		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
 		$('.comic-info').fadeOut(400);
-		displayComicCards(state);
 		getComicInfo(state, function(state) {
 			displayComicCards(state);
 		});
+		console.log(state);
 	});
 }
 
