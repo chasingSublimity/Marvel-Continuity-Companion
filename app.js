@@ -118,8 +118,8 @@ function displayCharacterCard(state) {
 }
 
 function displayComicCards(state) {
-	var apiResults1 = '';
-	var apiResults2 = '';
+	var cardRowA = '<div class="js-search-results row">';
+	var cardRowB = '<div class="js-search-results row">';
 	var comicCounter = 0;
 	// verify comics were returned, then display comic cards
 	if (state.totalResults > 0) {
@@ -143,21 +143,22 @@ function displayComicCards(state) {
 					'</div>';
 				// controls which element the results get rendered into
 				if (comicCounter < coversPerRow) {
-					apiResults1 += htmlFrame;
+					cardRowA += htmlFrame;
 				} else {	
-					apiResults2 += htmlFrame;
+					cardRowB += htmlFrame;
 				}
 				comicCounter++;
 			}
 		}
+		cardRowA += '</div>';
+		cardRowB += '</div>';
+		// increments the starting point of for loop that build html frame
 		state.comicsStartPoint += displayAtATime;
 	} else {
-		apiResults1 += '<p>No Results</p>';
+		cardRowA += '<p>No Results</p>';
 	}
-
 	// Renders search results
-	$('.js-search-results-1').html(apiResults1);
-	$('.js-search-results-2').html(apiResults2);
+	$('.js-comic-section').append(cardRowA + cardRowB);
 	// Render "More Comics Button"
 	$('.button-div').show();
 	// Renders attribution info
