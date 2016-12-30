@@ -22,7 +22,7 @@ var state = {
 function resetUi() {
 	$('.js-character-section').html('');
 	$('.js-comic-section').html('');
-	
+
 }
 
 // get character ID
@@ -200,7 +200,9 @@ function watchMoreComics() {
 		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
 		$('.comic-info').fadeOut(400);
 		displayComicCards(state);
-		getComicInfo(state);
+		getComicInfo(state, function(state) {
+			displayComicCards(state);
+		});
 	});
 }
 
