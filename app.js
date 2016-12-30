@@ -202,7 +202,9 @@ function watchMoreComics() {
 		getComicInfo(state, function(state) {
 			displayComicCards(state);
 		});
-		$('.button-div').fadeIn(500);
+		if (state.comicsApiCallOffset <= state.totalResults) {
+			$('.button-div').fadeIn(500);
+		}
 	});
 }
 
