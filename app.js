@@ -15,6 +15,7 @@ var state = {
 	comics: [],
 	comicsStartPoint: 0,
 	comicsApiCallOffset: 0,
+	totalRowsDisplayed: 0,
 	totalResults: 0,
 };
 
@@ -116,8 +117,11 @@ function displayCharacterCard(state) {
 }
 
 function displayComicCards(state) {
-	var cardRowA = '<div class="js-search-results row">';
-	var cardRowB = '<div class="js-search-results row">';
+	/* increment state.totalRowsDisplayed to allow dynamic cardRowA + cardRowB values, 
+	which allows rendering of only the rows that are being appended. */
+	state.totalRowsDisplayed += 2; 
+	var cardRowA = '<div class="js-search-results-' + (state.totalRowsDisplayed - 1).toString() + ' row" hidden="true">';
+	var cardRowB = '<div class="js-search-results-' + state.totalRowsDisplayed.toString() + ' row" hidden="true">';
 	var comicCounter = 0;
 	// verify comics were returned, then display comic cards
 	if (state.totalResults > 0) {
@@ -129,7 +133,7 @@ function displayComicCards(state) {
 				var htmlFrame = 
 					'<div class="col-3">' +
 						'<div class="cover-container js-cover-container">' +
-							'<div class="comic-info" hidden="true">' +
+							'<div class="comic-info">' +
 								'<a href="' + state.comics[i].comicLink + '">' + 
 									'<img src="' + state.comics[i].comicImgPath +'/detail.' + state.comics[i].comicImgExtension + '" class="comic-img">' + 
 								'</a>' +
@@ -157,12 +161,10 @@ function displayComicCards(state) {
 	}
 	// Renders search results
 	$('.js-comic-section').append(cardRowA + cardRowB);
-	// Render "More Comics Button"
-	$('.button-div').show();
 	// Renders attribution info
 	$('footer').html(state.attributionHTML);
-	$('.js-comic-section').fadeIn(1000);
-	$('.comic-info').fadeIn(1000);
+	$('.js-search-results-' + (state.totalRowsDisplayed - 1).toString()).fadeIn(1000);
+	$('.js-search-results-' + state.totalRowsDisplayed.toString()).fadeIn(1000);
 }
 
 // reset UI
@@ -175,31 +177,32 @@ function resetUi() {
 function watchSubmit() {
 	$('.js-search-form').submit(function (event){
 		event.preventDefault();
-		$('.button-div').hide();
 		$('.app-instructions').fadeOut(200);
-		// Search-result area reset
+		// reset search-result area
     $('.js-search-results-1').html('');
 		$('.js-search-results-2').html('');
 		// reset state and UI
-		state = {attributionHTML: '' , character: {id: null, name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, comicsApiCallOffset: 0, totalResults: 0};
+		state = {attributionHTML: '' , character: {id: null, name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, comicsApiCallOffset: 0, totalRowsDisplayed: 0,totalResults: 0};
 		resetUi();
 		// Api calls and rendering
 		getCharacterInfo(state, $(this).find('.js-search-input').val());
 		// Search input reset 
 		$('.js-search-input').val('');
     $('.js-search-input').focus();
+    // fade in more comics button
+    $('.button-div').fadeIn(500);
 	});
 }
 
 // function to listen for "see more comics"
 function watchMoreComics() {
 	$('.button-div').on('click', '.more-comics', function(event) {
+		$('.button-div').fadeOut(500);
 		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
-		$('.comic-info').fadeOut(400);
 		getComicInfo(state, function(state) {
 			displayComicCards(state);
 		});
-		console.log(state);
+		$('.button-div').fadeIn(500);
 	});
 }
 
