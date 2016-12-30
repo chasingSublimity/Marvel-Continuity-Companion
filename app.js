@@ -18,6 +18,13 @@ var state = {
 	totalResults: 0,
 };
 
+// reset UI
+function resetUi() {
+	$('.js-character-section').html('');
+	$('.js-comic-section').html('');
+	
+}
+
 // get character ID
 function getCharacterInfo(state, searchTerm) {
 	var characterQuery = {
@@ -152,7 +159,7 @@ function displayComicCards(state) {
 		}
 		cardRowA += '</div>';
 		cardRowB += '</div>';
-		// increments the starting point of for loop that build html frame
+		// increments the starting point for the loop that builds the html frames
 		state.comicsStartPoint += displayAtATime;
 	} else {
 		cardRowA += '<p>No Results</p>';
@@ -176,8 +183,9 @@ function watchSubmit() {
 		// Search-result area reset
     $('.js-search-results-1').html('');
 		$('.js-search-results-2').html('');
-		// reset state
+		// reset state and UI
 		state = {attributionHTML: '' , character: {id: null, name: '', imagePath: '', imageExtension: ''}, comics: [], comicsStartPoint: 0, comicsApiCallOffset: 0, totalResults: 0};
+		resetUi();
 		// Api calls and rendering
 		getCharacterInfo(state, $(this).find('.js-search-input').val());
 		// Search input reset 
