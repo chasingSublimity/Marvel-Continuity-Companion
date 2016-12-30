@@ -201,10 +201,10 @@ function watchMoreComics() {
 		// the comicsStartPoint variable has been updated, so calling the function below displays the next round of comic cards
 		getComicInfo(state, function(state) {
 			displayComicCards(state);
+			if (state.comicsApiCallOffset <= state.totalResults) {
+				$('.button-div').fadeIn(500);
+			}
 		});
-		if (state.comicsApiCallOffset <= state.totalResults) {
-			$('.button-div').fadeIn(500);
-		}
 	});
 }
 

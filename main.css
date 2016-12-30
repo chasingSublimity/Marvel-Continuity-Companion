@@ -121,6 +121,12 @@ form {
 	margin-top: 10px;
 }
 
+button {
+	border-radius: 7px;
+	background-color: rgba(125, 125, 125, 1);
+	color: whitesmoke;
+}
+
 footer {
 	text-align: center;
 	margin-top: 37px;
@@ -138,5 +144,10 @@ footer > a {
 	}
 	input {
 		width: 100%;
+	}
+	.comic-info {
+		margin: auto;
+    width: 70%;
+    margin-top: 30px;
 	}
 }
