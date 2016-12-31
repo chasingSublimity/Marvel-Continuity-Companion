@@ -30,6 +30,7 @@ function getCharacterInfo(state, searchTerm) {
  		displayCharacterCard(state);
  		getComicInfo(state, function(state) {
  			displayComicCards(state);
+ 			$('.button-div').fadeIn(500);
  		});
  	});
 }
@@ -159,12 +160,13 @@ function displayComicCards(state) {
 	} else {
 		cardRowA += '<p>No Results</p>';
 	}
-	// Renders search results
+	// Appends comic cards to DOM
 	$('.js-comic-section').append(cardRowA + cardRowB);
-	// Renders attribution info
-	$('footer').html(state.attributionHTML);
+	// fades in comic cards
 	$('.js-search-results-' + (state.totalRowsDisplayed - 1).toString()).fadeIn(1000);
 	$('.js-search-results-' + state.totalRowsDisplayed.toString()).fadeIn(1000);
+	// Renders attribution info
+	$('footer').html(state.attributionHTML);
 }
 
 // reset UI
@@ -190,7 +192,7 @@ function watchSubmit() {
 		$('.js-search-input').val('');
     $('.js-search-input').focus();
     // fade in more comics button
-    $('.button-div').fadeIn(500);
+    // $('.button-div').fadeIn(500);
 	});
 }
 

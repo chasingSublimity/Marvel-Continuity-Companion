@@ -84,7 +84,7 @@ form {
 
 .comic-section {
 	margin-top: 75px;
-	min-height: 1050px;
+/*	min-height: 995px;*/
 }
 
 .comic-container {
@@ -109,7 +109,7 @@ form {
 }
 
 .comic-descrip h3 {
-	text-align:center;
+	text-align: center;
 	margin: auto;
 }
 
