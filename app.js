@@ -191,8 +191,6 @@ function watchSubmit() {
 		// Search input reset 
 		$('.js-search-input').val('');
     $('.js-search-input').focus();
-    // fade in more comics button
-    // $('.button-div').fadeIn(500);
 	});
 }
 
