@@ -39,6 +39,10 @@ form {
 	text-align: center;
 }
 
+.search-input {
+	height: 40px;
+}
+
 .app-instructions p {
 	text-align: center;
 	background-color: rgba(159, 163, 168, .5);
