@@ -166,7 +166,7 @@ function displayComicCards(state) {
 	$('.js-search-results-' + (state.totalRowsDisplayed - 1).toString()).fadeIn(1000);
 	$('.js-search-results-' + state.totalRowsDisplayed.toString()).fadeIn(1000);
 	// Renders attribution info
-	$('footer').html(state.attributionHTML);
+	// $('footer').html(state.attributionHTML);
 }
 
 // reset UI
