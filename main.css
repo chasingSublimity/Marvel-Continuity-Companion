@@ -147,14 +147,16 @@ button {
 }
 
 footer {
-	text-align: center;
-	margin-top: 37px;
-  margin-bottom: 30px;
+  color: white;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 10px;
+  font-weight: bolder;
 }
 
-footer > a {
-	background-color: rgba(159, 163, 168, .5);
-  color: black;
+.gh-icon {
+  color: white;
 }
 
 @media only screen and (max-width: 640px) {
