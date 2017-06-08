@@ -147,11 +147,12 @@ button {
 }
 
 footer {
+	width: 100%;
+	text-align: center;
   color: white;
   position: absolute;
-  right: 0;
   bottom: 0;
-  margin-right: 10px;
+  margin: 10px auto;
   font-weight: bolder;
 }
 
