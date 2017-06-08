@@ -112,7 +112,7 @@ function displayCharacterCard(state) {
 		);
 	} else {
 		// display no results
-		$('.js-character-section').html('<p>No results</p>');
+		$('.js-character-section').html('<p>We couldn\'t find that character</p>');
 	}
 	$('.char-info').fadeIn(1000);
 }
